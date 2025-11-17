@@ -1,0 +1,25 @@
+modbus:
+  port: "/dev/ttyUSB0"
+  baudrate: 9600
+  parity: "N"
+  stopbits: 1
+  bytesize: 8
+  unit_id: 1  # meter Modbus address
+
+channels:
+  mains_l1:
+    register_power: 100  # TODO: replace with real register from meter datasheet
+    scale: 0.1           # raw_value * scale = watts
+  mains_l2:
+    register_power: 102
+    scale: 0.1
+  solar_pv:
+    register_power: 104
+    scale: 0.1
+
+logging:
+  interval_seconds: 10
+  csv_file: "/home/pi/solthrive/solar_log.csv"
+
+site:
+  timezone: "America/New_York"
