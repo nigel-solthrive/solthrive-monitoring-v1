@@ -1,4 +1,4 @@
-SolThrive Monitoring V1 — Software Stack
+## SolThrive Monitoring V1 — Software Stack
 
 This directory contains the **runtime software** for the SolThrive Monitoring V1 system running on a Raspberry Pi.
 
@@ -67,7 +67,6 @@ cd solthrive-monitoring-v1/software
 
 ### 3.2 Install Python Dependencies
 
-bash
 pip3 install -r requirements.txt
 
 Typical dependencies include:
@@ -75,9 +74,9 @@ Typical dependencies include:
 * pymodbus
 * pyserial
 * flask
-* pyyam`
+* pyyaml
 
-(Exact list is in requirements.txt.)
+(Exact list is in requirements.txt)
 
 ### 3.3 Create Data Directories
 
@@ -90,7 +89,7 @@ These paths are referenced in config.yaml.
 
 ---
 
-## 4. Configuration (`config.yaml`)
+## 4. Configuration (config.yaml)
 
 config.yaml defines how the software talks to the meter and where it stores data.
 
