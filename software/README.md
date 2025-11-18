@@ -15,13 +15,12 @@ If the hardware is the body, this folder is the brain.
 
 ## 1. Directory Contents
 
-text
-software/
-  poller.py          # Reads Modbus registers from the meter
-  logger.py          # Writes snapshots & summaries to disk
-  web.py             # Local HTTP API server (Flask)
-  config.yaml        # Core runtime configuration
-  requirements.txt   # Python dependencies
+text software/
+   * poller.py            # Reads Modbus registers from the meter
+   * logger.py            # Writes snapshots & summaries to disk
+   * web.py               # Local HTTP API server (Flask)
+   * config.yaml          # Core runtime configuration
+   * requirements.txt     # Python dependencies
 
 For a full conceptual overview, see:
 
@@ -59,10 +58,10 @@ These are normally run as **systemd services**, but can also be run manually dur
 
 ### 3.1 Clone the Repo
 
-cd /opt
-sudo git clone https://github.com/nigel-solthrive/solthrive-monitoring-v1.git
-sudo chown -R pi:pi solthrive-monitoring-v1
-cd solthrive-monitoring-v1/software
+   * cd /opt
+   * sudo git clone https://github.com/nigel-solthrive/solthrive-monitoring-v1.git
+   * sudo chown -R pi:pi solthrive-monitoring-v1
+   * cd solthrive-monitoring-v1/software
 
 > Replace pi:pi with your actual user if different.
 
@@ -81,10 +80,10 @@ Typical dependencies include:
 
 ### 3.3 Create Data Directories
 
-sudo mkdir -p /var/solthrive/data
-sudo mkdir -p /var/solthrive/logs/daily
-sudo mkdir -p /var/solthrive/logs/monthly
-sudo chmod -R 777 /var/solthrive
+* sudo mkdir -p /var/solthrive/data
+* sudo mkdir -p /var/solthrive/logs/daily
+* sudo mkdir -p /var/solthrive/logs/monthly
+* sudo chmod -R 777 /var/solthrive
 
 These paths are referenced in config.yaml.
 
@@ -96,15 +95,15 @@ config.yaml defines how the software talks to the meter and where it stores data
 
 **Example structure:**
 
-serial_port: "/dev/ttyUSB0"
-baudrate: 9600
-modbus_address: 1
-poll_interval: 2           # Seconds
-log_dir: "/var/solthrive/logs/"
-data_dir: "/var/solthrive/data/"
-latest_file: "/var/solthrive/data/latest.json"
-history_file: "/var/solthrive/data/history.jsonl"
-api_port: 8080
+* serial_port: "/dev/ttyUSB0"
+* baudrate: 9600
+* modbus_address: 1
+* poll_interval: 2           # Seconds
+* log_dir: "/var/solthrive/logs/"
+* data_dir: "/var/solthrive/data/"
+* latest_file: "/var/solthrive/data/latest.json"
+* history_file: "/var/solthrive/data/history.jsonl"
+* api_port: 8080
 
 Key fields:
 
@@ -123,8 +122,8 @@ Key fields:
 
 ### 5.1 Run the Poller
 
-cd /opt/solthrive-monitoring-v1/software
-python3 poller.py
+* cd /opt/solthrive-monitoring-v1/software
+* python3 poller.py
 
 Expected:
 
@@ -149,9 +148,9 @@ python3 web.py
 
 Then from another machine on the LAN:
 
-curl http://<pi-ip>:8080/api/latest
-curl http://<pi-ip>:8080/api/history?hours=1
-curl http://<pi-ip>:8080/api/system
+* curl http://<pi-ip>:8080/api/latest
+* curl http://<pi-ip>:8080/api/history?hours=1
+* curl http://<pi-ip>:8080/api/system
 
 You should see JSON responses with current values.
 
@@ -173,27 +172,27 @@ Typical service names (example):
 
 ### 6.1 Enable Services
 
-sudo systemctl enable solthrive-poller
-sudo systemctl enable solthrive-logger
-sudo systemctl enable solthrive-api
+* sudo systemctl enable solthrive-poller
+* sudo systemctl enable solthrive-logger
+* sudo systemctl enable solthrive-api
 
 ### 6.2 Start Services
 
-sudo systemctl start solthrive-poller
-sudo systemctl start solthrive-logger
-sudo systemctl start solthrive-api
+* sudo systemctl start solthrive-poller
+* sudo systemctl start solthrive-logger
+* sudo systemctl start solthrive-api
 
 ### 6.3 Check Status
 
-sudo systemctl status solthrive-poller
-sudo systemctl status solthrive-logger
-sudo systemctl status solthrive-api
+* sudo systemctl status solthrive-poller
+* sudo systemctl status solthrive-logger
+* sudo systemctl status solthrive-api
 
 ### 6.4 View Logs
 
-journalctl -u solthrive-poller -f
-journalctl -u solthrive-logger -f
-journalctl -u solthrive-api -f
+* journalctl -u solthrive-poller -f
+* journalctl -u solthrive-logger -f
+* journalctl -u solthrive-api -f
 
 ---
 
