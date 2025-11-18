@@ -1,4 +1,4 @@
-# 🚀 **SolThrive Monitoring V1 — Device Model S1**
+# 🚀 **SolThrive Monitoring V1**
 
 **Local Solar + Home Energy Monitoring System (CT-based, Modbus, Raspberry Pi)**
 **Version:** V1.0
