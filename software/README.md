@@ -15,7 +15,8 @@ If the hardware is the body, this folder is the brain.
 
 ## 1. Directory Contents
 
-  software/
+text
+software/
   poller.py          # Reads Modbus registers from the meter
   logger.py          # Writes snapshots & summaries to disk
   web.py             # Local HTTP API server (Flask)
