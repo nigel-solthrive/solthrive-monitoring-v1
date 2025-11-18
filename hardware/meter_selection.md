@@ -1,6 +1,4 @@
-A2 — Energy Meter Selection**
-
-**SolThrive Monitoring V1 — Enhanced Engineering Edition**
+A2 — Energy Meter Selection
 
 ---
 
