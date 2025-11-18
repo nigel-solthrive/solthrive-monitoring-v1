@@ -1,5 +1,21 @@
 ````markdown
+**Version:** V1.0  
+**Status:** Active / Under Development  
+
 # SolThrive Monitoring V1 — Software Stack
+
+## Table of Contents
+- [1. Directory Contents](#1-directory-contents)
+- [2. Runtime Overview](#2-runtime-overview)
+- [3. Install & Setup](#3-install--setup-on-the-pi)
+- [4. Configuration](#4-configuration-configyaml)
+- [5. Running Services Manually](#5-running-services-manually-dev-mode)
+- [6. Systemd Integration](#6-systemd-service-integration-production-mode)
+- [7. Data Files & Formats](#7-data-files--formats)
+- [8. API Endpoints](#8-api-endpoints-local-only-v1)
+- [9. Development Notes](#9-development-notes--extensibility)
+- [10. Troubleshooting](#10-troubleshooting)
+- [11. Roadmap Hooks](#11-roadmap-hooks-v2v3)
 
 This directory contains the **runtime software** for the SolThrive Monitoring V1 system running on a Raspberry Pi.
 
@@ -228,6 +244,7 @@ journalctl -u solthrive-api -f
 ### 7.1 Latest Snapshot
 
 **File:** `/var/solthrive/data/latest.json`
+
 **Format:**
 
 ```json
