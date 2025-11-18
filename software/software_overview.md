@@ -1,6 +1,4 @@
-A5 — Software Architecture Overview**
-
-**SolThrive Monitoring V1 — Enhanced Engineering Edition**
+A5 — Software Architecture Overview
 
 ---
 
