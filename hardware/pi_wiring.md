@@ -1,194 +1,256 @@
-# SolThrive Monitoring V1 — Raspberry Pi Wiring & Mounting Guide
+A3 — Raspberry Pi Wiring & Mounting Guide**
 
-## 1. Purpose of This Document
-This guide explains how to wire, mount, and power the Raspberry Pi used in the SolThrive Monitoring V1 prototype.
-
-The Pi acts as:
-- The Modbus data poller  
-- The local API server  
-- The logging engine  
-- The dashboard host (optional for V1)  
+**SolThrive Monitoring V1 — Enhanced Engineering Edition**
 
 ---
 
-## 2. Hardware Used in V1 Prototype
+## **1. Purpose**
 
-### Raspberry Pi
-Recommended models:
-- Raspberry Pi 4 (best performance)
-- Raspberry Pi 3B+ (fully compatible)
-- Raspberry Pi Zero 2W (only for ultra-low cost build)
+This document explains how to **wire, mount, power, and connect** the Raspberry Pi used in the SolThrive Monitoring V1 prototype.
+The Pi is the central controller for:
 
-V1 Target: **Raspberry Pi 4 Model B (2GB or 4GB)**
+* **Modbus polling** (via RS-485)
+* **JSON snapshot generation**
+* **Data logging**
+* **Local API hosting**
+* Optional **dashboard serving**
 
-### Required Accessories
-- 5V → 3A USB-C power supply (official or high-quality)
-- MicroSD card 16–64GB (Class 10 or better)
-- RS-485 → USB adapter
-- Ethernet cable (recommended for stability)
-- DIN-rail mountable Pi case (optional but ideal for field installs)
+This guide ensures a clean, reliable field installation.
 
 ---
 
-## 3. Communication Interface (RS-485 → USB)
+## **2. Raspberry Pi Hardware Requirements**
 
-The Pi communicates with the energy meter using **Modbus RTU (RS-485)** via a USB adapter.
+### ✔ Recommended Models
 
-### Recommended RS-485 Adapters
-- Waveshare USB-to-RS485  
-- DSD TECH SH-U10  
-- FTDI-based industrial adapters (most reliable)
+* **Raspberry Pi 4 Model B (2GB or 4GB)** → *Primary V1 standard*
+* Raspberry Pi 3B+ → compatible
+* Raspberry Pi Zero 2W → only for ultra-low-cost builds
 
-### Wiring to the Energy Meter
-Energy Meter RS-485 terminals:
-- **A** (sometimes “D+”)
-- **B** (sometimes “D–”)
-- **GND** (optional but recommended)
+### ✔ Required Accessories
 
-Adapter wires:
-- A → A  
-- B → B  
-- GND → GND  
-
-Keep RS-485 cable twisted pair (CAT5/CAT6 works great).
-
-Maximum recommended length for V1: **10–50 ft**  
-Up to 1000 ft is possible, but not needed here.
+* High-quality **5V 3A USB-C** power supply (official recommended)
+* 16–64GB **Class 10 microSD card**
+* **RS-485 → USB** adapter
+* Ethernet cable (preferred)
+* Optional: **DIN-rail Pi enclosure** for professional installs
 
 ---
 
-## 4. Network Connectivity
+## **3. RS-485 Communication Interface**
+
+The Pi communicates with the energy meter via **Modbus RTU over RS-485**, using an RS-485 → USB adapter.
+
+### Recommended Adapters
+
+* Waveshare USB-RS485
+* DSD TECH SH-U10
+* FTDI-based industrial adapters (most reliable)
+
+### Wiring RS-485 to the Meter
+
+#### **Meter Terminals**
+
+* **A** (a.k.a. D+)
+* **B** (a.k.a. D–)
+* **GND** (optional but recommended)
+
+#### **Wiring Rules**
+
+* Adapter **A → Meter A**
+* Adapter **B → Meter B**
+* Adapter **GND → Meter GND**
+* Use **twisted-pair cable** (CAT5/6 works)
+
+### Cable Length Guidelines
+
+* V1 install: **10–50 ft** recommended
+* RS-485 supports up to **1000 ft**, but not needed here
+* Avoid running parallel to AC conductors for long distances
+
+---
+
+## **4. Network Connectivity**
 
 ### Preferred Order
-1. **Ethernet (best)**  
-   - Most stable  
-   - No Wi-Fi dropouts  
-   - Ideal for monitoring reliability  
 
-2. **Wi-Fi (acceptable)**  
-   Use if Ethernet isn’t available near the panel.
+1. **Ethernet (best)**
 
-3. **Hotspot / Cellular (future V2/V3)**  
-   Only needed for remote commercial installs.
+   * rock-solid
+   * zero Wi-Fi dropouts
+   * ideal for continuous monitoring
 
----
+2. **Wi-Fi (acceptable)**
 
-## 5. Power Considerations
+   * use only when Ethernet is not available
 
-The Pi MUST have:
-- Clean, stable 5V
-- At least 2.5A available (3A recommended)
+3. **Hotspot / Cellular (future V2/V3)**
 
-Avoid:
-- Cheap Amazon wall plugs  
-- USB ports on inverters  
-- Weak Wi-Fi distance causing brownouts  
+   * for remote or off-grid deployments
 
-If powering near a panel:
-- Use a **dedicated receptacle**
-- Or a **UL-listed DIN-rail USB PSU** (MeanWell HDR-15-5 recommended)
+The Pi needs stable connectivity for the API, logging, and optional dashboard.
 
 ---
 
-## 6. Physical Mounting Options
+## **5. Power Requirements (Critical)**
 
-### Option 1 — DIN-Rail Case (Recommended)
-Advantages:
-- Clean install next to the energy meter  
-- Mechanical stability  
-- Easier field servicing  
-- Professional appearance  
+The Pi requires:
 
-DIN-rail Pi cases to consider:
-- GeeekPi DIN-Rail Raspberry Pi 4 Enclosure  
-- Waveshare Industrial Pi Case  
+* Clean, stable **5V supply**
+* At least **2.5A** available (3A recommended)
 
-### Option 2 — Standard Pi Case (Budget)
-Advantages:
-- Cheap  
-- Easy  
+### Avoid:
 
-Disadvantages:
-- Not panel-friendly  
-- No mounting tabs  
-- Can vibrate loose  
+* Random Amazon wall-warts
+* Weak inverter USB ports
+* Long, thin USB cables that cause voltage drop
+* Outlets with questionable grounding
 
-### Option 3 — Pi Mounted to Backboard (Simple V1)
-- Use plastic standoffs  
-- Screw into plywood backer board  
-- Avoid conductive surfaces  
-- Keep away from bus bars  
+### Recommended Power Options Near Panel:
+
+* Standard wall receptacle
+* **DIN-rail 5V power supply** (e.g., MeanWell HDR-15-5)
 
 ---
 
-## 7. Recommended Mounting Location
+## **6. Physical Mounting Options**
+
+A clean install is essential.
+These are the recommended options:
+
+### **Option 1 — DIN-Rail Mounted Pi Case (Recommended)**
+
+**Advantages:**
+
+* Professional appearance
+* Secure and vibration-resistant
+* Keeps wiring organized
+* Easier field servicing
+
+**Suggested Models:**
+
+* GeeekPi DIN-Rail Pi 4 Enclosure
+* Waveshare Industrial Case
+
+---
+
+### **Option 2 — Standard Pi Case (Budget Option)**
+
+**Advantages:**
+
+* Cheap and widely available
+* Fine for benchtop testing
+
+**Disadvantages:**
+
+* Not enclosure-friendly
+* No mounting holes
+* Easier to dislodge
+
+---
+
+### **Option 3 — Pi Mounted on a Backboard**
+
+* Attach Pi using **plastic standoffs**
+* Mount to a plywood/ABS backboard
+* Keep a safe distance from energized components
+* Avoid conductive surfaces
+
+This is the simplest field-install option.
+
+---
+
+## **7. Recommended Mounting Location**
 
 Ideal:
-- **Inside an electrical equipment room**, on a backboard  
-- Next to the router or Ethernet switch  
-- Away from high-voltage lugs  
-- Not inside the main service panel (unsafe & code issues)
 
-Allowed (if careful):
-- Inside an auxiliary enclosure  
-- With proper ventilation  
+* Electrical equipment room
+* Near router or Ethernet switch
+* Good airflow
+* Away from panel lugs and main breakers
+
+Allowed (with care):
+
+* Inside an auxiliary enclosure
+* Dedicated Pi box with ventilation
 
 Avoid:
-- Inside inverter housing  
-- Inside the main panel  
-- Anywhere moisture can enter  
+
+* Inside main service panel
+* Inside inverter housings
+* Damp or unventilated locations
 
 ---
 
-## 8. Field Wiring Diagram (ASCII)
+## **8. Wiring Diagram (Enhanced ASCII)**
 
-### Pi + RS-485 + Meter Wiring Overview
+Below is a clean, accurate diagram of the full communication chain.
 
-          ┌──────────────────────────┐
-          │      Raspberry Pi        │
-          │                          │
-          │  USB Port ───────────────┼─── USB-RS485 Adapter
-          └──────────────────────────┘
-                      │
-                      │  RS-485 Twisted Pair (CAT5/6)
-                      ▼
-          ┌──────────────────────────┐
-          │   Energy Meter (Acrel)   │
-          │                          │
-          │   A  ────────────────────┘
-          │   B  ────────────────────┘
-          │  GND ────────────────────┘
-          └──────────────────────────┘
+```
+          ┌─────────────────────┐
+          │   Raspberry Pi       │
+          │ (poller / logger /   │
+          │   local API server)  │
+          └──────────┬──────────┘
+                     │ USB
+                     ▼
+          ┌─────────────────────┐
+          │ USB → RS-485 Adapter│
+          └──────────┬──────────┘
+                     │ Twisted Pair (A/B/GND)
+                     ▼
+          ┌─────────────────────┐
+          │ Energy Meter (Acrel)│
+          │   A  ◄──────────────┘
+          │   B  ◄──────────────┘
+          │  GND ◄──────────────┘
+          └─────────────────────┘
 
 CTs → Meter  
-Meter → Pi  
-Pi → SolThrive Dashboard  
+Meter → Pi (Modbus RTU)  
+Pi → Dashboard/API  
+```
+
+This chain forms the backbone of SolThrive V1.
 
 ---
 
-## 9. SD Card Setup Notes (For Later Software Section)
+## **9. SD Card Image & First Boot Checklist**
 
-Image to install:
-- Raspberry Pi OS Lite (recommended)
-- No desktop environment needed for V1
+### Recommended OS
 
-Basic preparation:
-- Flash via Raspberry Pi Imager
-- Enable SSH
-- Set hostname: `solthrive-monitor-v1`
-- Pre-configure Wi-Fi if needed
+* **Raspberry Pi OS Lite** (no desktop)
+
+### Initial Setup Steps
+
+1. Flash OS using Raspberry Pi Imager
+2. Enable **SSH**
+3. Set hostname:
+   `solthrive-monitor-v1`
+4. Configure Wi-Fi if needed
+5. Install Python dependencies from `requirements.txt`
+6. Create directories:
+
+   ```
+   /var/solthrive/data/
+   /var/solthrive/logs/
+   ```
+
+This prepares the Pi for software deployment (A5).
 
 ---
 
-## 10. Summary (A3 Complete)
+## **10. Summary (A3 Complete)**
 
-For SolThrive Monitoring V1:
-- Use Raspberry Pi 4  
-- Use USB-RS485 adapter  
-- Use Ethernet when possible  
-- Install in a clean, ventilated, panel-adjacent enclosure  
-- Keep wiring simple and safe  
-- Follow orientation + polarity rules  
+For SolThrive Monitoring V1, the Raspberry Pi must:
 
-The Pi is the “brain” of the V1 system — it polls the meter, logs values, and serves the API.
+✔ Be a Pi 4 (preferred)
+✔ Use a USB-RS485 adapter
+✔ Connect via Ethernet if possible
+✔ Mount cleanly in a DIN-rail case or backboard
+✔ Be powered by a stable 5V/3A supply
+✔ Use OS Lite + SSH + hostname configuration
 
+The Pi is the **brain** of the monitoring system — responsible for reading the meter, storing data, and serving the API.
+
+---
