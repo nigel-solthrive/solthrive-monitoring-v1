@@ -1,6 +1,4 @@
-A3 — Raspberry Pi Wiring & Mounting Guide**
-
-**SolThrive Monitoring V1 — Enhanced Engineering Edition**
+A3 — Raspberry Pi Wiring & Mounting Guide
 
 ---
 
