@@ -1,5 +1,9 @@
 # 🚀 **SolThrive Monitoring V1**
 
+![Status](https://img.shields.io/badge/status-active-brightgreen)
+![Version](https://img.shields.io/badge/version-V1.0-blue)
+![Platform](https://img.shields.io/badge/platform-Raspberry%20Pi-red)
+
 **Local Solar + Home Energy Monitoring System (CT-based, Modbus, Raspberry Pi)**
 **Version:** V1.0
 **Status:** Active / Under Development
@@ -124,8 +128,11 @@ Serves a local API:
 /api/system
 ```
 
-Full details: `docs/A5_Software_Architecture.md`
-Implementation guide: `software/README.md`
+Full details: [A5 Software Architecture](docs/A5_Software_Architecture.md)  
+Implementation guide: [Software README](software/README.md)
+
+**See also:**  
+- [Software Stack Technical README](software/README.md)
 
 ---
 
