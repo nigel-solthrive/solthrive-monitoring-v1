@@ -1,163 +1,246 @@
-# SolThrive Monitoring V1 — Current Transformer (CT) Specifications
+A2 — Energy Meter Selection**
 
-## 1. Purpose of This Document
-This document defines the Current Transformer (CT) requirements, behavior, safety, and installation guidelines for the SolThrive Monitoring V1 prototype system.
-
-CTs are critical for measuring:
-- Solar production
-- Home consumption
-- Grid import/export
-- Real-time power flow
-
-They act like magnetic sensors that measure current without touching the conductor.
+**SolThrive Monitoring V1 — Enhanced Engineering Edition**
 
 ---
 
-## 2. What CTs Do (Plain English)
-A CT clamps around a single conductor and detects the magnetic field created by electrical current.
+## **1. Purpose**
 
-Think of it as:
+This document defines the engineering requirements and selection criteria for the **3-channel Modbus energy meter** used in SolThrive Monitoring V1.
 
-“A stethoscope for electricity.”
+This meter performs all electrical measurement functions:
 
-No cutting, splicing, or interrupting wires.
+* Reads **current** from 3 CTs
+* Measures **voltage** on L1 and L2
+* Calculates **power** and **energy**
+* Provides all data over **Modbus RTU (RS-485)** to the Raspberry Pi
 
----
-
-## 3. Split-Core vs Solid-Core CTs
-
-### Split-Core CTs (Recommended for V1)
-- Clamp-on
-- Install without disconnecting conductors
-- Safer
-- Faster retrofit installs
-- Slightly lower accuracy, but ideal for residential monitoring
-
-### Solid-Core CTs
-- Require disconnecting the wire
-- Extremely accurate
-- Not recommended for retrofits
-
-V1 choice: Split-core CTs for all three channels.
+Choosing the correct meter ensures accurate readings, safe operation, and compatibility with the SolThrive V1 software stack.
 
 ---
 
-## 4. CT Amp Ratings
+## **2. Functional Requirements**
 
-| Location              | CT Rating | Reason                               |
-|----------------------|-----------|----------------------------------------|
-| Main Service L1      | 100–200A  | Full house load                       |
-| Main Service L2      | 100–200A  | Same as above                         |
-| PV Backfeed Breaker  | 20–50A    | PV inverter output is much smaller    |
+The meter must support:
 
----
+### ✔ **1. Split-phase 120/240V Residential Power**
 
-## 5. CT Polarity and Orientation
+* L1 and L2 voltage measurement
+* Single-phase, 3-channel current monitoring
 
-Correct orientation:
-- Main CTs → arrow toward the home (toward loads)
-- PV CT → arrow toward the inverter (toward source)
+### ✔ **2. Three Independent CT Inputs**
 
-If reversed:
-- Import/export flips
-- Can be corrected in software
+For reading:
 
----
+* **Main L1**
+* **Main L2**
+* **PV backfeed breaker**
 
-## 6. CT Wiring (Lead Connections)
+Each CT channel must accept:
 
-Typical color code:
-- White = +
-- Black = –
+* 20–200A CTs
+* CTs **with burden resistors built in**
+* 1% accuracy or better
 
-Meter terminal mapping:
-- CT1 → I1+ / I1–
-- CT2 → I2+ / I2–
-- CT3 → I3+ / I3–
+### ✔ **3. RS-485 / Modbus RTU Support**
 
----
+Required features:
 
-## 7. Accuracy Class
+* Modbus RTU (function codes 0x03, 0x04)
+* Configurable baud rate (9600 recommended for V1)
+* Stable polling at 1–5 seconds
 
-CT accuracy options:
-- 1% — ideal for V1
-- 0.5% — premium
-- 3% — too low
+### ✔ **4. Provides Specific Mandatory Registers**
 
-V1 target: 1% accuracy CTs.
+The meter **must** expose registers for:
 
----
+* Voltage L1/L2
+* Current CT1/CT2/CT3
+* Active power (total + per phase)
+* Import kWh
+* Export kWh
 
-## 8. Burden Resistors
+(See **A4 — Modbus Register Map** for details.)
 
-CTs must have burden resistors.
+### ✔ **5. DIN-Rail Mountable**
 
-V1 Requirement:
-Use CTs with built-in burden resistors.
-
-Benefits:
-- Safer
-- Meter compatible
-- No risk of overvoltage
-- Simpler wiring
+To ensure safe installation and clean wiring layout.
 
 ---
 
-## 9. CT Safety Notes
+## **3. Recommended Meter Models (Validated for V1)**
 
-- Clamp around one conductor only
-- Never clamp around hot + neutral together
-- Keep clear of energized lugs
-- Shut off main breaker if unsure
-- Treat panels as energized even when “off”
+SolThrive V1 uses compact, affordable industrial meters that meet the above requirements.
 
----
+### **Primary Recommendation**
 
-## 10. Placement Diagrams (ASCII)
+#### **Acrel ADL400-CT**
 
-### Main Service Conductors
-        [Utility Service]
-               ↓
-   ┌─────────────────────────┐
-   │       Main Breaker      │
-   │                         │
-   │   L1 —— [ CT1 ] ——→     │ → Meter CH1
-   │   L2 —— [ CT2 ] ——→     │ → Meter CH2
-   └─────────────────────────┘
-               ↓
-           House Loads
+* 3-channel CT inputs
+* Split-phase compatible
+* 1% accuracy
+* Native RS-485
+* DIN-rail enclosure
+* Widely used in residential and light commercial monitoring
 
-### PV Backfeed Breaker
-Inverter → Backfeed Breaker → —— [ CT3 ] ——→ Meter CH3
+Reliable, accurate, and easy to integrate with Modbus.
 
----
+### **Alternate Options**
 
-## 11. Recommended CT Models
+#### **Eastron SDM230 / SDM630 Series**
 
-### Main (100–200A):
-- Magnelab SCT-1250
-- CCS AccuCT CTBL series
-- YHDC SCT-013-000 (budget)
+* Strong Modbus support
+* Good accuracy
+* DIN-rail
+* Slightly more expensive
+* Multi-phase variants available for future V2
 
-### PV (20–50A):
-- Magnelab SCT-0750
-- Echun ECS series
-- YHDC SCT-013-030
+#### **DTSU666 / DDSU666 (Huawei-style)**
+
+* Good Modbus implementation
+* Usually tied to OEM systems
+* Documentation varies by vendor
 
 ---
 
-## 12. Summary
+## **4. CT Compatibility Requirements**
 
-SolThrive V1 requires:
-- (2) 100–200A split-core CTs
-- (1) 20–50A split-core CT
-- 1% accuracy
-- Built-in burden resistors
-- Correct orientation toward load/source
+Any meter selected **must support external CTs** with:
 
-Provides accurate:
-- Consumption
-- PV production
-- Grid flow
+* **1% accuracy**
+* **20–200A range** depending on channel
+* **Built-in burden resistors**
+* **Split-core mechanical design**
+
+This ensures correct pairing with A1 CT specifications.
+
+---
+
+## **5. Electrical Requirements**
+
+### **Voltage Input**
+
+* 120/240V split-phase
+* Direct voltage sensing terminals
+* Category III rated
+
+### **Current Channels**
+
+* 3 independent channels
+* Accept CTs via screw terminals
+* Must support correct scaling (Amps × 100, etc.)
+
+### **Isolation**
+
+* Optical or galvanic RS-485 isolation preferred
+* Reduces noise and ground loop issues
+
+---
+
+## **6. Modbus Requirements**
+
+The meter must provide a **minimal register set** required by the SolThrive V1 poller:
+
+| Category         | Needed Registers        |
+| ---------------- | ----------------------- |
+| **Voltage**      | L1, L2                  |
+| **Current**      | CT1, CT2, CT3           |
+| **Active Power** | Total, L1, L2, PV       |
+| **Energy**       | Import kWh, Export kWh  |
+| **Optional**     | Power factor, frequency |
+
+SolThrive software expects:
+
+* 16-bit and 32-bit numeric registers
+* Integer scaling (÷10, ÷100)
+* Stable response within 100–200ms
+
+(Full details in **A4 — Modbus Register Map**.)
+
+---
+
+## **7. Installation & Physical Requirements**
+
+### **DIN-Rail Mountable**
+
+The meter must:
+
+* Fit standard 35mm rail
+* Support field wiring access
+* Provide front panel display (optional)
+
+### **Terminals**
+
+* Screw terminals capable of secure ferrule connections
+* Clearly labeled:
+
+  * A / B RS-485
+  * L1 / L2 voltage
+  * CT1 / CT2 / CT3
+
+### **Enclosure Considerations**
+
+Meter must be installed in:
+
+* A dedicated auxiliary enclosure **or**
+* Equipment room backboard
+* **Not** inside the main panel
+
+---
+
+## **8. Meter Selection Decision Tree**
+
+```
+Is the system split-phase 120/240V?
+   │
+   ├── No → Choose multi-phase meter (V2/V3)
+   │
+   └── Yes
+         │
+         ├── Do you need three CT channels?
+         │       │
+         │       ├── No → 1-channel meter inappropriate for SolThrive
+         │       └── Yes
+         │
+         ├── Does meter support Modbus RTU via RS-485?
+         │       │
+         │       └── No → Reject
+         │
+         ├── Does meter expose required registers?
+         │       │
+         │       └── No → Reject
+         │
+         └── Acceptable (Acrel ADL400-CT recommended)
+```
+
+---
+
+## **9. Why the Acrel ADL400-CT Fits SolThrive V1**
+
+* Compact DIN-rail format
+* 3 channel CT measurement
+* Stable Modbus RTU protocol
+* Proven accuracy in residential loads
+* Strong compatibility with RS-485 → USB adapters
+* Known register mapping (A4)
+
+This meter provides the best mix of cost, accuracy, and developer friendliness.
+
+---
+
+## **10. Summary (A2 Complete)**
+
+To qualify for SolThrive V1:
+
+✔ 3 CT channels (main L1, main L2, PV)
+✔ Split-phase 120/240V support
+✔ True RMS measurement
+✔ RS-485 Modbus RTU
+✔ Integer-scaled voltage/current/power registers
+✔ DIN-rail mount
+✔ Works with CTs defined in **A1**
+
+**Recommended Model: Acrel ADL400-CT**
+Reliable, accurate, and perfectly aligned with all other V1 hardware and software components.
 
 ---
