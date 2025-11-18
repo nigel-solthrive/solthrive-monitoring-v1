@@ -1,6 +1,4 @@
-A4 — Modbus Register Map**
-
-**SolThrive Monitoring V1 — Enhanced Engineering Edition**
+A4 — Modbus Register Map
 
 ---
 
