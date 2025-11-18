@@ -50,13 +50,13 @@ The goal:
     ┌────────────────────────────────────┐
     │         Acrel ADL-Series Meter     │
     │------------------------------------│
-    │  CT1 → I1+/I1-                      │
-    │  CT2 → I2+/I2-                      │
-    │  (Optional CT3 for subload)         │
+    │  CT1 → I1+/I1-                     │
+    │  CT2 → I2+/I2-                     │
+    │  (Optional CT3 for subload)        │
     │                                    │
-    │  L1/L2 Voltage Sense Inputs         │
+    │  L1/L2 Voltage Sense Inputs        │
     │                                    │
-    │  RS-485 A/B/GND                     │
+    │  RS-485 A/B/GND                    │
     └────────────────────────────────────┘
                    |
                    |  RS-485 (A/B/GND)
