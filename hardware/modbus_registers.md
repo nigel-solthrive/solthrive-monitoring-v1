@@ -1,202 +1,253 @@
-# SolThrive Monitoring V1 — Modbus Register Map Overview
+A4 — Modbus Register Map**
 
-## 1. Purpose of This Document
-This document defines the essential Modbus RTU registers needed for SolThrive Monitoring V1 to read real-time data from the Acrel ADL400-CT (or similar 3-channel Modbus CT meter).
-
-These registers are used by:
-- poller.py  
-- logger.py  
-- dashboard API  
-- validation/testing scripts  
-
-This is NOT the full manufacturer register list — only the registers needed for V1.
+**SolThrive Monitoring V1 — Enhanced Engineering Edition**
 
 ---
 
-## 2. Key Concepts (Plain English)
+## **1. Purpose**
 
-### What is Modbus RTU?
-Modbus RTU is a simple communication protocol that sends and receives numeric registers over RS-485.
+This document defines the **exact Modbus RTU registers** required for SolThrive Monitoring V1. These registers are accessed by the Raspberry Pi to read:
+
+* Voltage
+* Current
+* Power
+* Energy import/export
+* Optional metrics (PF, frequency)
+
+This is *not* the full manufacturer register list — only the **minimal required set** used by V1 software (poller.py, logger.py, local API).
+
+---
+
+## **2. What Modbus RTU Is (Plain English)**
+
+Modbus RTU is a simple request–reply protocol over RS-485.
 
 Think of it like:
-> “Ask the meter what the current is → meter replies with a number.”
 
-### What is a Register?
-A register is just a memory slot holding a value:
-- Voltage
-- Current
-- Power
-- Energy
-- Frequency
+> **“Pi asks the meter for a number → meter replies with that number.”**
 
-Each register has:
-- An **address** (like a street number)
-- A **data type** (16-bit or 32-bit)
-- A **unit** (amps, volts, watts, etc.)
+Each data point (voltage, current, etc.) lives in a **register** — an address that stores a numeric value.
+
+Registers can be:
+
+* **16-bit** (single register)
+* **32-bit** (two registers combined)
+
+SolThrive V1 uses both.
 
 ---
 
-## 3. SolThrive V1 Needed Registers (Minimal Set)
+## **3. Required Registers for SolThrive V1**
 
-Below is the minimal recommended register set for V1.
-
-These are generic Acrel-style addresses commonly used across the ADL300/400 meter series.
-
-### Voltage
-| Measurement | Register | Type | Notes |
-|-------------|----------|------|-------|
-| Voltage L1  | 0x0000   | 16-bit | Volts × 10 |
-| Voltage L2  | 0x0001   | 16-bit | Volts × 10 |
-
-### Current (CT Inputs)
-| CT Channel | Register | Type | Notes |
-|------------|----------|------|-------|
-| CT1 (Main L1) | 0x0006 | 16-bit | Amps × 100 |
-| CT2 (Main L2) | 0x0007 | 16-bit | Amps × 100 |
-| CT3 (PV Breaker) | 0x0008 | 16-bit | Amps × 100 |
-
-### Active Power
-| Power Measurement | Register | Type | Notes |
-|-------------------|----------|------|-------|
-| Total Active Power | 0x000C | 16-bit | W |
-| L1 Active Power | 0x000D | 16-bit | W |
-| L2 Active Power | 0x000E | 16-bit | W |
-| PV Active Power | 0x000F | 16-bit | W |
-
-### Energy Import/Export
-| Energy | Register | Type | Notes |
-|--------|----------|------|-------|
-| Import kWh | 0x0100 | 32-bit | Accumulating |
-| Export kWh | 0x0101 | 32-bit | Accumulating |
-
-### Power Factor (Optional)
-| Measurement | Register | Type |
-|-------------|----------|------|
-| PF Total    | 0x0030   | 16-bit |
+Below is the **minimal stable register set** required by the V1 software.
+These addresses match common layouts for Acrel ADL300/ADL400 series meters.
 
 ---
 
-## 4. Scaling Factors (IMPORTANT)
+### **3.1 Voltage Registers**
 
-Meters do not usually return “real” numbers.  
-They send scaled integers to preserve accuracy.
-
-### Example Voltage
-If register value = **2415**  
-Scale = **÷10**  
-Actual = **241.5 V**
-
-### Example Current
-If register value = **1532**  
-Scale = **÷100**  
-Actual = **15.32 A**
-
-The software must apply these scalers.
+| Measurement    | Register | Type   | Scaling | Notes                |
+| -------------- | -------- | ------ | ------- | -------------------- |
+| **Voltage L1** | `0x0000` | 16-bit | ÷10     | e.g., 2415 → 241.5 V |
+| **Voltage L2** | `0x0001` | 16-bit | ÷10     | e.g., 2397 → 239.7 V |
 
 ---
 
-## 5. Data Polling Recommendations
+### **3.2 Current Registers (CT Inputs)**
 
-### Polling interval:
-- **Every 1–2 seconds** → Real-time feeling  
-- **Every 5 seconds** → For long-term logging stability
-
-### Timeout:
-- 100–200 ms
-
-### Retries:
-- 2 retries recommended
-
-### Why?
-RS-485 is extremely stable, so low polling cost.
+| Channel              | Register | Type   | Scaling | Notes          |
+| -------------------- | -------- | ------ | ------- | -------------- |
+| **CT1 (Main L1)**    | `0x0006` | 16-bit | ÷100    | Amps (L1)      |
+| **CT2 (Main L2)**    | `0x0007` | 16-bit | ÷100    | Amps (L2)      |
+| **CT3 (PV Breaker)** | `0x0008` | 16-bit | ÷100    | Solar backfeed |
 
 ---
 
-## 6. Modbus Frames (Plain English)
+### **3.3 Active Power Registers**
 
-When the Pi wants to read Current L1:
-
-**Pi sends:**  
-“Meter, what is register 0x0006?”
-
-**Meter replies:**  
-“Here is the 16-bit value.”
-
-Your poller code:
-- Reads the register  
-- Applies the scaling  
-- Stores the real value  
+| Measurement     | Register | Type   | Scaling | Notes                         |
+| --------------- | -------- | ------ | ------- | ----------------------------- |
+| **Total Power** | `0x000C` | 16-bit | raw W   | Net consumption/import/export |
+| **L1 Power**    | `0x000D` | 16-bit | raw W   |                               |
+| **L2 Power**    | `0x000E` | 16-bit | raw W   |                               |
+| **PV Power**    | `0x000F` | 16-bit | raw W   | Solar output                  |
 
 ---
 
-## 7. Register Map (ASCII Quick Diagram)
+### **3.4 Energy Registers**
 
-0x0000 → Voltage L1
-0x0001 → Voltage L2
-0x0006 → Current CT1 (Main L1)
-0x0007 → Current CT2 (Main L2)
-0x0008 → Current CT3 (PV)
+These values accumulate over time.
 
-0x000C → Total Power
-0x000D → Power L1
-0x000E → Power L2
-0x000F → Power PV
+| Energy Type    | Register | Type   | Notes                 |
+| -------------- | -------- | ------ | --------------------- |
+| **Import kWh** | `0x0100` | 32-bit | Total energy imported |
+| **Export kWh** | `0x0101` | 32-bit | Total energy exported |
 
-0x0100 → Energy Import (kWh)
-0x0101 → Energy Export (kWh)
-
+These are essential for long-term savings reports and dashboard analytics.
 
 ---
 
-## 8. Software Expectations (poller.py)
+### **3.5 Optional: Power Factor**
 
-The poller should:
-1. Connect to RS-485  
-2. Read registers in batches  
-3. Apply scaling  
-4. Output JSON like:
+| Measurement  | Register | Type   | Scaling          |
+| ------------ | -------- | ------ | ---------------- |
+| **PF Total** | `0x0030` | 16-bit | unitless (0–1.0) |
 
+Not required for V1, but useful for power-quality diagnostics.
+
+---
+
+## **4. Scaling Factors (Critical)**
+
+Meters rarely return “real numbers.”
+They return integers with built-in scaling factors.
+
+### **Voltage Example**
+
+* Raw value: **2415**
+* Scaling: ÷10
+* Actual: **241.5 V**
+
+### **Current Example**
+
+* Raw value: **1532**
+* Scaling: ÷100
+* Actual: **15.32 A**
+
+### Why Scaling Exists
+
+* Ensures precision
+* Avoids floating-point issues
+* Keeps communication stable over slow RS-485 lines
+
+**SolThrive software applies all scaling in poller.py.**
+
+---
+
+## **5. Recommended Polling Settings**
+
+| Parameter                | Value                        |
+| ------------------------ | ---------------------------- |
+| **Polling Interval**     | 1–2 seconds (real-time feel) |
+| **Alternative Interval** | 5 seconds (low-load logging) |
+| **Timeout**              | 100–200 ms                   |
+| **Retries**              | 2                            |
+
+Modbus is extremely efficient — even fast polling is low overhead.
+
+---
+
+## **6. Example Modbus Interaction (Plain English)**
+
+When the Pi wants to read CT1 current:
+
+**Pi sends:**
+
+> “Meter, give me register **0x0006**.”
+
+**Meter replies:**
+
+> “Here’s the value: **1532**.”
+
+**Pi converts:**
+1532 ÷ 100 = **15.32 A**
+
+**logger.py** then writes the result to JSONL/CSV.
+
+---
+
+## **7. ASCII Register Map Overview**
+
+A quick visual lookup:
+
+```
+0x0000  Voltage L1
+0x0001  Voltage L2
+
+0x0006  Current CT1 (Main L1)
+0x0007  Current CT2 (Main L2)
+0x0008  Current CT3 (PV)
+
+0x000C  Total Active Power
+0x000D  Power L1
+0x000E  Power L2
+0x000F  Power PV
+
+0x0100  Import kWh (32-bit)
+0x0101  Export kWh (32-bit)
+
+0x0030  Power Factor (optional)
+```
+
+These registers provide all essential readings for consumption, solar production, and net flow.
+
+---
+
+## **8. What poller.py Expects**
+
+The poller:
+
+1. Connects to `/dev/ttyUSB0`
+2. Reads all required registers in a batch
+3. Applies scaling
+4. Produces a JSON snapshot like:
+
+```
 {
-"voltage_l1": 241.2,
-"voltage_l2": 239.9,
-"current_l1": 12.53,
-"current_l2": 10.11,
-"current_pv": -4.75,
-"power_total": 1580,
-"energy_import": 852.1,
-"energy_export": 445.8
+  "timestamp": "2025-01-03T14:22:10Z",
+  "voltage_l1": 241.2,
+  "voltage_l2": 239.9,
+  "current_l1": 12.53,
+  "current_l2": 10.11,
+  "current_pv": -4.75,
+  "power_total": 1580,
+  "energy_import": 852.1,
+  "energy_export": 445.8
 }
-
-This is what logger.py and the dashboard will consume.
-
----
-
-## 9. Future-Proofing for V2/V3
-These registers cover:
-- Home consumption  
-- PV production  
-- Grid interaction  
-- Total power flow  
-
-Upgrades for future versions:
-- THD (harmonics)
-- Frequency
-- Neutral current
-- Phase angle tracking
-- Reactive power
-- Multi-inverter PV systems
-- Three-phase commercial loads
+```
 
 ---
 
-## 10. Summary (A4 Complete)
-SolThrive V1 requires only ~12 Modbus registers to function.
+## **9. Future-Proofing for V2/V3**
 
-These enable:
-- Real-time current (CT1/CT2/CT3)
-- Grid import/export
-- Solar production
-- Home consumption
-- Long-term energy tracking
+The V1 register set supports:
 
-The Pi will poll these registers through RS-485 using the V1 poller script.
+* Full consumption monitoring
+* Solar PV measurement
+* Import/export tracking
+* Net metering analytics
+* Dashboard visualizations
+
+Future expansions may include:
+
+* THD (harmonics)
+* Frequency
+* Neutral current
+* Reactive/VAR metrics
+* Multi-inverter systems
+* Commercial 3-phase support
+
+The A4 register map is intentionally minimal to keep V1 simple and stable.
+
+---
+
+## **10. Summary (A4 Complete)**
+
+SolThrive V1 uses ~12 registers to compute:
+
+* Home consumption
+* Solar production
+* Grid import/export
+* Total instantaneous power
+* Long-term energy flows
+
+These registers provide all data required by:
+
+* **poller.py**
+* **logger.py**
+* **local API (web.py)**
+* Future dashboards
+
+This register map is the backbone of the SolThrive monitoring system.
+
+---
