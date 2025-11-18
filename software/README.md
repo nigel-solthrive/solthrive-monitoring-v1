@@ -1,9 +1,3 @@
-Nice. Then we move to the brains of the beast.
-
-Here’s a complete **`software/README.md`** you can drop straight into your repo. It’s written for you *and* any future collaborator who touches the Pi stack.
-
----
-
 ````markdown
 # SolThrive Monitoring V1 — Software Stack
 
@@ -392,15 +386,4 @@ For architecture docs, see:
 * `docs/A5_Software_Architecture.md`
 * `docs/Appendix_A1_Glossary.md`
 
-```
-
----
-
-If you want, next I can:
-
-- Draft a **top-level repo `README.md`** that ties *everything* together (hardware, software, test, roadmap), or  
-- Start sketching the **V2 dashboard spec** (what the local UI should actually look like and which API calls it will use).  
-
-My vote: after this `software/README.md`, a **new top-level README** is the cleanest next move so the whole thing feels like a cohesive project.
-::contentReference[oaicite:0]{index=0}
 ```
