@@ -1,6 +1,4 @@
-**A1 — Current Transformer (CT) Specifications**
-
-**SolThrive Monitoring V1 — Enhanced Engineering Edition**
+A1 — Current Transformer (CT) Specifications
 
 ---
 
