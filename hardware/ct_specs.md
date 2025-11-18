@@ -1,205 +1,163 @@
-SolThrive Monitoring V1 — Current Transformer (CT) Specifications
+# SolThrive Monitoring V1 — Current Transformer (CT) Specifications
 
-# #️⃣ **1. What CTs Actually Do**
+## 1. Purpose of This Document
+This document defines the Current Transformer (CT) requirements, behavior, safety, and installation guidelines for the SolThrive Monitoring V1 prototype system.
 
-A Current Transformer (CT) measures electrical current by detecting the magnetic field around a conductor.
-It does **not** interrupt the wire — it simply clamps around it and outputs a small, safe signal for the meter to read.
+CTs are critical for measuring:
+- Solar production
+- Home consumption
+- Grid import/export
+- Real-time power flow
+
+They act like magnetic sensors that measure current without touching the conductor.
+
+---
+
+## 2. What CTs Do (Plain English)
+A CT clamps around a single conductor and detects the magnetic field created by electrical current.
 
 Think of it as:
 
-> **A stethoscope for electricity.**
+“A stethoscope for electricity.”
+
+No cutting, splicing, or interrupting wires.
 
 ---
 
-# #️⃣ **2. Why CTs Matter in Solar Monitoring**
+## 3. Split-Core vs Solid-Core CTs
 
-To measure real-world behavior, CTs provide:
+### Split-Core CTs (Recommended for V1)
+- Clamp-on
+- Install without disconnecting conductors
+- Safer
+- Faster retrofit installs
+- Slightly lower accuracy, but ideal for residential monitoring
 
-* **Solar production** (PV backfeed breaker)
-* **Home consumption** (main service legs L1 & L2)
-* **Grid import/export** (computed from PV + consumption)
+### Solid-Core CTs
+- Require disconnecting the wire
+- Extremely accurate
+- Not recommended for retrofits
 
-Without CTs, you only know inverter output — not full system behavior.
-
----
-
-# #️⃣ **3. Split-Core vs Solid-Core CTs**
-
-### ✔️ **Split-Core CTs (Recommended for V1)**
-
-* Clamp-on design (no disconnecting conductors)
-* Faster + safer for retrofit installs
-* Slightly lower accuracy but perfect for home monitoring
-* Ideal for SolThrive V1
-
-### ✔️ **Solid-Core CTs**
-
-* Wire must be removed and re-fed through
-* High accuracy (0.1%)
-* Not recommended for retrofits or field installs
-
-**V1 Choice:** *Split-core CTs for all channels.*
+V1 choice: Split-core CTs for all three channels.
 
 ---
 
-# #️⃣ **4. CT Amp Ratings**
+## 4. CT Amp Ratings
 
-CTs must match the size of the conductor they clamp onto.
-
-### **Recommended Ratings**
-
-| Location       | Rating   | Purpose                 |
-| -------------- | -------- | ----------------------- |
-| **Main L1**    | 100–200A | Entire home load        |
-| **Main L2**    | 100–200A | Same as above           |
-| **PV Circuit** | 20–50A   | Solar inverter backfeed |
-
-These support typical U.S. residential electrical systems.
+| Location              | CT Rating | Reason                               |
+|----------------------|-----------|----------------------------------------|
+| Main Service L1      | 100–200A  | Full house load                       |
+| Main Service L2      | 100–200A  | Same as above                         |
+| PV Backfeed Breaker  | 20–50A    | PV inverter output is much smaller    |
 
 ---
 
-# #️⃣ **5. CT Polarity**
+## 5. CT Polarity and Orientation
 
-CTs have direction indicators:
+Correct orientation:
+- Main CTs → arrow toward the home (toward loads)
+- PV CT → arrow toward the inverter (toward source)
 
-* Arrow, dot, or “K” marking
-* Indicates the “source → load” direction
-
-### **Correct Orientation**
-
-* **Main CTs:** arrow **toward the panel loads**
-* **PV CT:** arrow **toward the inverter**
-
-If reversed, readings invert (export ↔ import).
-We *can* fix this in software, but proper orientation is preferred.
+If reversed:
+- Import/export flips
+- Can be corrected in software
 
 ---
 
-# #️⃣ **6. CT Wiring (Leads → Meter Terminals)**
+## 6. CT Wiring (Lead Connections)
 
-Most split-core CTs include two leads:
+Typical color code:
+- White = +
+- Black = –
 
-* **White = Positive (+)**
-* **Black = Negative (–)**
-
-### Typical meter terminal mapping:
-
-* CT1 → `I1+ / I1−`
-* CT2 → `I2+ / I2−`
-* CT3 → `I3+ / I3−`
-
-Your specific meter will list exact terminals.
+Meter terminal mapping:
+- CT1 → I1+ / I1–
+- CT2 → I2+ / I2–
+- CT3 → I3+ / I3–
 
 ---
 
-# #️⃣ **7. Accuracy Class**
+## 7. Accuracy Class
 
-CT accuracy affects measurement quality.
+CT accuracy options:
+- 1% — ideal for V1
+- 0.5% — premium
+- 3% — too low
 
-Common classes:
-
-* **1%** (standard, very good)
-* **0.5%** (premium)
-* **3%** (low-end; avoid)
-
-**V1 Target Accuracy:**
-✔️ **1% CTs** for all three channels
-
-This meets professional monitoring standards.
+V1 target: 1% accuracy CTs.
 
 ---
 
-# #️⃣ **8. CT Burden Resistors**
+## 8. Burden Resistors
 
-CTs require a “burden resistor” to convert current into a readable voltage.
+CTs must have burden resistors.
 
-### For V1:
-
-**Use CTs with built-in burden resistors.**
+V1 Requirement:
+Use CTs with built-in burden resistors.
 
 Benefits:
-
-* Safer
-* Simpler wiring
-* Compatible with most Modbus meters
-* Zero risk of overvoltage
-
-This is the industry standard for home monitoring.
+- Safer
+- Meter compatible
+- No risk of overvoltage
+- Simpler wiring
 
 ---
 
-# #️⃣ **9. CT Safety Notes**
+## 9. CT Safety Notes
 
-Important installation guidelines:
-
-* Clamp around **one** conductor only (L1 or L2 or PV hot)
-* Never clamp around **hot + neutral together** (it cancels out)
-* Keep hands/tools clear of live lugs
-* If unsure: shut off main breaker
-* Treat panels as energized even when “off”
-
-Split-core CTs greatly reduce installation risk.
+- Clamp around one conductor only
+- Never clamp around hot + neutral together
+- Keep clear of energized lugs
+- Shut off main breaker if unsure
+- Treat panels as energized even when “off”
 
 ---
 
-# #️⃣ **10. CT Placement (ASCII Diagrams)**
+## 10. Placement Diagrams (ASCII)
 
-### **Main Service Conductors**
-
-```
+### Main Service Conductors
         [Utility Service]
                ↓
    ┌─────────────────────────┐
-   │     Main Breaker        │
+   │       Main Breaker      │
    │                         │
-   │   L1 —— [ CT1 ] ——→     │ → Meter Channel 1
-   │   L2 —— [ CT2 ] ——→     │ → Meter Channel 2
+   │   L1 —— [ CT1 ] ——→     │ → Meter CH1
+   │   L2 —— [ CT2 ] ——→     │ → Meter CH2
    └─────────────────────────┘
                ↓
            House Loads
-```
 
-### **PV Backfeed Breaker**
-
-```
-Inverter → Backfeed Breaker → —— [ CT3 ] ——→ Meter Channel 3
-```
-
-These will be recreated as real diagrams in Figma later.
+### PV Backfeed Breaker
+Inverter → Backfeed Breaker → —— [ CT3 ] ——→ Meter CH3
 
 ---
 
-# #️⃣ **11. Recommended CT Models (V1 Prototype)**
+## 11. Recommended CT Models
 
-### **Main (100–200A):**
+### Main (100–200A):
+- Magnelab SCT-1250
+- CCS AccuCT CTBL series
+- YHDC SCT-013-000 (budget)
 
-* Magnelab SCT-1250
-* CCS AccuCT CTBL series
-* YHDC SCT-013-000 (budget option)
-
-### **PV (20–50A):**
-
-* Magnelab SCT-0750
-* Echun ECS series
-* YHDC SCT-013-030
-
-All include burden resistors.
-All compatible with standard home energy monitors.
+### PV (20–50A):
+- Magnelab SCT-0750
+- Echun ECS series
+- YHDC SCT-013-030
 
 ---
 
-# #️⃣ **12. Summary**
+## 12. Summary
 
 SolThrive V1 requires:
-* **Two 100–200A split-core CTs** for mains
-* **One 20–50A split-core CT** for PV
-* ~1% accuracy
-* Built-in burden resistors
-* Correct orientation toward load/source
-* Clean wiring into meter channels
+- (2) 100–200A split-core CTs
+- (1) 20–50A split-core CT
+- 1% accuracy
+- Built-in burden resistors
+- Correct orientation toward load/source
 
-This ensures:
-* Accurate consumption
-* Accurate PV production
-* Accurate grid flow
-* Reliable long-term field performance
+Provides accurate:
+- Consumption
+- PV production
+- Grid flow
+
+---
