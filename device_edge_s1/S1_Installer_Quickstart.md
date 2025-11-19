@@ -4,7 +4,6 @@
 
 ---
 
-```markdown
 # SolThrive Edge S1 — Installer Quick-Start Guide  
 **Version:** v1.0  
 **Device:** SolThrive Edge S1  
@@ -223,19 +222,3 @@ solthriverenewables.com
 
 # ✔️ End of Quick-Start Guide
 ```
-
----
-
-# 🟦 **Next: The Full Installer Manual (20+ pages)**
-
-Now that the Quick-Start Guide is done, your next document is:
-
-```
-device_edge_s1/S1_Installer_Manual.md
-```
-
-I’ll deliver that next — properly structured, professional, and modeled after the AlsoEnergy manual (but 100% your own).
-
-Ready for it? Just say:
-
-**“Let’s do the full manual.”**
