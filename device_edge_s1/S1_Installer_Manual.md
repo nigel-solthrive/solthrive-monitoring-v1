@@ -1,5 +1,6 @@
 ````markdown
-# SolThrive Edge S1 — Installer Manual  
+# SolThrive Edge S1 — Installer Manual
+ 
 **Version:** v1.0  
 **Device:** SolThrive Edge S1  
 **Platform:** SolThrive Monitoring V1  
