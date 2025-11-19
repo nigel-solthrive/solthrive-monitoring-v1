@@ -1,22 +1,5 @@
-Perfect — we're rolling with the **professional, real-world combo**:
+**SolThrive Edge S1 — Installer Quick-Start Guide (v1.0)**
 
-✅ **2–3 Page Installer Quick-Start Guide**
-✅ **Full Installer Manual (20+ pages)**
-
-I’ll start by giving you the **Quick-Start Guide**, clean, tight, and GitHub-ready.
-You’ll save it here:
-
-```
-device_edge_s1/S1_Installer_Quickstart.md
-```
-
-Once that’s complete, I’ll follow with the **Full Installer Manual** next.
-
----
-
-# 🟩 **SolThrive Edge S1 — Installer Quick-Start Guide (v1.0)**
-
-**Save as:** `device_edge_s1/S1_Installer_Quickstart.md`
 **Length:** ~2.5 pages, fast for field use, includes micro-diagrams + safety.
 
 ---
@@ -93,10 +76,10 @@ If reversed, import/export values will be inverted.
 
 [ Top ]
 ┌───────────────────┐
-│  Acrel Meter       │
+│  Acrel Meter      │
 └───────────────────┘
-│  Raspberry Pi 4    │
-│  + RS485 Adapter   │
+│  Raspberry Pi 4   │
+│  + RS485 Adapter  │
 └───────────────────┘
 [ Bottom ]
 
