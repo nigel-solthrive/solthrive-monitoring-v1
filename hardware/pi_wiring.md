@@ -186,9 +186,9 @@ Below is a clean, accurate diagram of the full communication chain.
 
 ```
           ┌─────────────────────┐
-          │   Raspberry Pi       │
-          │ (poller / logger /   │
-          │   local API server)  │
+          │   Raspberry Pi      │
+          │ (poller / logger /  │
+          │   local API server) │
           └──────────┬──────────┘
                      │ USB
                      ▼
